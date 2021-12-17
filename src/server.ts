@@ -20,6 +20,10 @@ const MAP_LOC = {
 
 type Point = [number, number];
 
+setInterval(() => {
+    axios.get(`${process.env.SELF_URL}/upkeep`);
+}, 60 * 1000);
+
 async function startServer() {
     const port = parseInt(process.env.PORT || '') || 8888;
     const app = express();
@@ -28,6 +32,8 @@ async function startServer() {
     app.use(cors());
     app.use(json());
     app.use('/get/', express.static('export'));
+
+    app.get('/upkeep', (req, res) => res.send('OK'));
 
     registerFont(path.join(__dirname, '..', 'fonts', 'NUNITO-BOLD.TTF'), { family: 'Nunito' });
     const logoOstrovy = await loadImage(path.join(__dirname, '..', 'images', 'ostrovy-logo.png'));
