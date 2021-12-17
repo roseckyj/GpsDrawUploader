@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { json } from 'body-parser';
 import { createCanvas, loadImage, registerFont } from 'canvas';
 import cookieParser from 'cookie-parser';
@@ -26,6 +27,7 @@ async function startServer() {
     app.use(cookieParser());
     app.use(cors());
     app.use(json());
+    app.use('/get/', express.static('export'));
 
     registerFont(path.join(__dirname, '..', 'fonts', 'NUNITO-BOLD.TTF'), { family: 'Nunito' });
     const logoOstrovy = await loadImage(path.join(__dirname, '..', 'images', 'ostrovy-logo.png'));
@@ -98,6 +100,8 @@ async function startServer() {
         stream.pipe(out);
         out.on('finish', () => {
             console.log(`The PNG file was created at ${path.join(__dirname, '..', 'export', uuid + '.png')}`);
+
+            axios.post(process.env.ZAPIER_URL || '', `${process.env.SELF_URL}/get/${uuid}.png`);
         });
 
         res.send('OK');
