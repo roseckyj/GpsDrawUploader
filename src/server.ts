@@ -20,9 +20,9 @@ const MAP_LOC = {
 
 type Point = [number, number];
 
-setInterval(() => {
+/*setInterval(() => {
     axios.get(`${process.env.SELF_URL}/upkeep`);
-}, 60 * 1000);
+}, 60 * 1000);*/
 
 async function startServer() {
     const port = parseInt(process.env.PORT || '') || 8888;
